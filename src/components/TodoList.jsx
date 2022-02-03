@@ -1,30 +1,20 @@
-import React, { useState } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
-import TodoItemsRemaining from './TodoItemsRemaining';
-import TodoClearCompleted from './TodoClearCompleted';
-import TodoCompleteAllTodos from './TodoCompleteAllTodos';
-import TodoFilters from './TodoFilters';
 
 TodoList.propTypes = {
   todos: PropTypes.array.isRequired,
-  todosFiltered: PropTypes.func.isRequired,
   completeTodo: PropTypes.func.isRequired,
   markAsEditing: PropTypes.func.isRequired,
   updateTodo: PropTypes.func.isRequired,
   cancelEdit: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
-  remaining: PropTypes.func.isRequired,
-  clearCompleted: PropTypes.func.isRequired,
-  completeAllTodos: PropTypes.func.isRequired,
 };
 
 function TodoList(props) {
-  const [filter, setFilter] = useState('all');
-
   return (
     <>
       <ul className="todo-list">
-        {props.todosFiltered(filter).map((todo, index) => (
+        {props.todos.map((todo, index) => (
           <li key={todo.id} className="todo-item-container">
             <div className="todo-item">
               <input
@@ -82,19 +72,23 @@ function TodoList(props) {
       </ul>
 
       <div className="check-all-container">
-        <TodoCompleteAllTodos completeAllTodos={props.completeAllTodos} />
+        <div>
+          <div className="button">Check All</div>
+        </div>
 
-        <TodoItemsRemaining remaining={props.remaining} />
+        <span>3 items remaining</span>
       </div>
 
       <div className="other-buttons-container">
-        <TodoFilters
-          todosFiltered={props.todosFiltered}
-          filter={filter}
-          setFilter={setFilter}
-        />
         <div>
-          <TodoClearCompleted clearCompleted={props.clearCompleted} />
+          <button className="button filter-button filter-button-active">
+            All
+          </button>
+          <button className="button filter-button">Active</button>
+          <button className="button filter-button">Completed</button>
+        </div>
+        <div>
+          <button className="button">Clear completed</button>
         </div>
       </div>
     </>
